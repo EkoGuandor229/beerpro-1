@@ -1,19 +1,28 @@
 package ch.beerpro.presentation;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.firebase.ui.auth.AuthUI;
+import com.flir.flironesdk.Device;
+import com.flir.flironesdk.Frame;
+import com.flir.flironesdk.FrameProcessor;
+import com.flir.flironesdk.RenderedImage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+
+import java.nio.ByteBuffer;
+import java.util.EnumSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,8 +41,13 @@ import ch.beerpro.presentation.utils.ViewPagerAdapter;
  * <p>
  * The Activity has three tabs, each of which implemented by a fragment and held together by a {@link ViewPager}.
  */
-public class MainActivity extends AppCompatActivity
-        implements BeerCategoriesFragment.OnItemSelectedListener, BeerManufacturersFragment.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements
+        BeerCategoriesFragment.OnItemSelectedListener,
+        BeerManufacturersFragment.OnItemSelectedListener,
+        Device.Delegate,
+        FrameProcessor.Delegate,
+        Device.StreamDelegate,
+        Device.PowerUpdateDelegate{
 
     /**
      * We use ButterKnife's view injection instead of having to call findViewById repeatedly.
@@ -45,9 +59,11 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.tablayout)
     TabLayout tabLayout;
 
+    private FrameProcessor frameProcessor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        frameProcessor = new FrameProcessor(this, this, EnumSet.of(RenderedImage.ImageType.BlendedMSXRGBA8888Image));
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -65,8 +81,20 @@ public class MainActivity extends AppCompatActivity
          * Just a placeholder for your own ideas...
          * */
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        fab.setOnClickListener(view -> Snackbar.make(view, "WIP", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Device.startDiscovery(this, this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Device.stopDiscovery();
     }
 
     private void setupViewPager(ViewPager viewPager, TabLayout tabLayout) {
@@ -120,6 +148,64 @@ public class MainActivity extends AppCompatActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    Device flirdevice;
+
+    @Override
+    public void onTuningStateChanged(Device.TuningState tuningState) {
+        //TODO Flir implement
+    }
+
+    @Override
+    public void onAutomaticTuningChanged(boolean b) {
+        //TODO Flir Implement
+    }
+
+    @Override
+    public void onDeviceConnected(Device device) {
+        //TODO Flir Implement
+        flirdevice = device;
+        device.startFrameStream(new Device.StreamDelegate() {
+            @Override
+            public void onFrameReceived(Frame frame) {
+                frameProcessor.processFrame(frame);
+            }
+        });
+    }
+
+    @Override
+    public void onDeviceDisconnected(Device device) {
+        //TODO Flir Implement
+    }
+
+    @Override
+    public void onFrameProcessed(RenderedImage renderedImage) {
+        //TODO Flir Implement
+        final Bitmap imageBitmap =  Bitmap.createBitmap(renderedImage.width(), renderedImage.height(), Bitmap.Config.ARGB_8888);
+        imageBitmap.copyPixelsFromBuffer(ByteBuffer.wrap(renderedImage.pixelData()));
+        final ImageView imageView = (ImageView)findViewById(R.id.imageView);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                imageView.setImageBitmap(imageBitmap);
+            }
+        });
+    }
+
+    @Override
+    public void onFrameReceived(Frame frame) {
+        //TODO Flir Implement
+    }
+
+    @Override
+    public void onBatteryChargingStateReceived(Device.BatteryChargingState batteryChargingState) {
+        //TODO Flir Implement
+    }
+
+    @Override
+    public void onBatteryPercentageReceived(byte b) {
+        //TODO Flir Implement
     }
 
     private void logout() {
