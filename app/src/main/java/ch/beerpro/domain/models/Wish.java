@@ -74,7 +74,7 @@ public class Wish implements Entity {
         if (o == this) return true;
         if (!(o instanceof Wish)) return false;
         final Wish other = (Wish) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual(this)) return false;
         final Object this$id = this.getId();
         final Object other$id = other.getId();
         if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
