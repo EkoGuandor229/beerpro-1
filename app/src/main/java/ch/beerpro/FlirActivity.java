@@ -52,13 +52,15 @@ public class FlirActivity extends AppCompatActivity implements
         EnumSet<RenderedImage.ImageType> imageSet = EnumSet.of(
                 RenderedImage.ImageType.VisibleAlignedRGBA8888Image,
                 RenderedImage.ImageType.BlendedMSXRGBA8888Image,
-                RenderedImage.ImageType.ThermalLinearFlux14BitImage,
-                RenderedImage.ImageType.ThermalRadiometricKelvinImage
+                RenderedImage.ImageType.ThermalRGBA8888Image
         );
+
+
 
         RenderedImage.ImageType defaultImageType = RenderedImage.ImageType.BlendedMSXRGBA8888Image;
         frameProcessor = new FrameProcessor(this, this, imageSet, true);
         frameProcessor.setGLOutputMode(defaultImageType);
+
 
         thermalImageView = findViewById(R.id.thermal_view);
         thermalImageView.setPreserveEGLContextOnPause(true);
@@ -66,6 +68,7 @@ public class FlirActivity extends AppCompatActivity implements
         thermalImageView.setRenderer(frameProcessor);
         thermalImageView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         thermalImageView.setDebugFlags(GLSurfaceView.DEBUG_CHECK_GL_ERROR | GLSurfaceView.DEBUG_LOG_GL_CALLS);
+
 
         dataStoragePath = getExternalFilesDir(null);
         if (!dataStoragePath.exists()) {
@@ -158,42 +161,10 @@ public class FlirActivity extends AppCompatActivity implements
     @Override
     public void onFrameProcessed(final RenderedImage renderedImage) {
         switch (renderedImage.imageType()) {
-            case BlendedMSXRGBA8888Image: {
-                if (isSnapshotRequested()) {
-                    snapshotRequested++;
-                    saveSnapshot(renderedImage);
-                }
-
-                break;
-            }
-
-            case ThermalRGBA8888Image: {
-                if (isSnapshotRequested()) {
-                    snapshotRequested++;
-                    saveSnapshot(renderedImage);
-                }
-
-                break;
-            }
-
-            case VisibleAlignedRGBA8888Image: {
-                if (isSnapshotRequested()) {
-                    snapshotRequested++;
-                    saveSnapshot(renderedImage);
-                }
-
-                break;
-            }
-
-            case ThermalRadiometricKelvinImage: {
-                if (isSnapshotRequested()) {
-                    snapshotRequested++;
-                    saveSnapshot(renderedImage);
-                }
-
-                break;
-            }
-
+            case BlendedMSXRGBA8888Image:
+            case ThermalRGBA8888Image:
+            case VisibleAlignedRGBA8888Image:
+            case ThermalRadiometricKelvinImage:
             case ThermalLinearFlux14BitImage: {
                 if (isSnapshotRequested()) {
                     snapshotRequested++;
@@ -312,7 +283,8 @@ public class FlirActivity extends AppCompatActivity implements
                         break;
                     }
 
-                    case ThermalRadiometricKelvinImage: {
+                    case ThermalRadiometricKelvinImage:
+                    case ThermalLinearFlux14BitImage: {
                         try {
                             saveRawData(snapshotFile, renderedImage.thermalPixelValues());
                         } catch (IOException ioe) {
@@ -328,18 +300,6 @@ public class FlirActivity extends AppCompatActivity implements
                         try {
                             Bitmap outputBitmap = renderedImage.getBitmap();
                             saveBitmap(outputBitmap, snapshotFile);
-                        } catch (IOException ioe) {
-                            Log.e("ThermicApp", ioe.getMessage(), ioe);
-                        } finally {
-                            snapsTaken++;
-                        }
-
-                        break;
-                    }
-
-                    case ThermalLinearFlux14BitImage: {
-                        try {
-                            saveRawData(snapshotFile, renderedImage.thermalPixelValues());
                         } catch (IOException ioe) {
                             Log.e("ThermicApp", ioe.getMessage(), ioe);
                         } finally {
@@ -395,6 +355,7 @@ public class FlirActivity extends AppCompatActivity implements
                         out.close();
                     }
                 } catch (IOException e) {
+                    //U+1F595
                 }
             }
         }
