@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -229,12 +228,7 @@ public class FlirActivity extends AppCompatActivity implements
             snapsTaken = 0;
 
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(FlirActivity.this, "Snap!", Toast.LENGTH_SHORT).show();
-                }
-            });
+            runOnUiThread(() -> Toast.makeText(FlirActivity.this, "Snap!", Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -309,11 +303,9 @@ public class FlirActivity extends AppCompatActivity implements
                         SystemClock.sleep(50);
                         MediaScannerConnection.scanFile(context,
                                 new String[]{new File(pubPath, fileName).toString()}, null,
-                                new MediaScannerConnection.OnScanCompletedListener() {
-                                    public void onScanCompleted(String path, Uri uri) {
-                                        Log.d("ThermicApp", "Scanned " + path + ":");
-                                        Log.d("ThermicApp", "-> uri=" + uri);
-                                    }
+                                (path, uri) -> {
+                                    Log.d("ThermicApp", "Scanned " + path + ":");
+                                    Log.d("ThermicApp", "-> uri=" + uri);
                                 });
 
                         snapsTaken++;

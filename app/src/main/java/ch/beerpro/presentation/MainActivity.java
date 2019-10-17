@@ -83,13 +83,7 @@ public class MainActivity extends AppCompatActivity implements
 
         setupViewPager(viewPager, tabLayout);
 
-        /*
-         * Just a placeholder for your own ideas...
-         * */
         FloatingActionButton fab = findViewById(R.id.fab);
-        //Create new intent and switch to FlirActivity
-//        fab.setOnClickListener(view -> Snackbar.make(view, "YouSuxx", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show());
         fab.setOnClickListener(view -> {
             if(!hasCameraPermission()) {
                 requestCameraPermission();
