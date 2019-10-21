@@ -28,6 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.beerpro.FlirActivity;
 import ch.beerpro.R;
+import ch.beerpro.Temperaturecalculator;
 import ch.beerpro.presentation.explore.BeerCategoriesFragment;
 import ch.beerpro.presentation.explore.BeerManufacturersFragment;
 import ch.beerpro.presentation.explore.ExploreFragment;
@@ -84,17 +85,24 @@ public class MainActivity extends AppCompatActivity implements
         setupViewPager(viewPager, tabLayout);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            if(!hasCameraPermission()) {
-                requestCameraPermission();
-            } else {
-                if (!hasExtStoragePermission()) {
-                    requestExtStoragePermission();
-                } else {
-                    startFlirActivity();
-                }
-            }
-        });
+        fab.setOnClickListener(view -> startCoolingCalculatorActivity());
+//        Opens the Fliractivity. Temporarily replaced with coolingtimecalculator for testing purposes
+//        fab.setOnClickListener(view -> {
+//            if(!hasCameraPermission()) {
+//                requestCameraPermission();
+//            } else {
+//                if (!hasExtStoragePermission()) {
+//                    requestExtStoragePermission();
+//                } else {
+//                    startFlirActivity();
+//                }
+//            }
+//        });
+    }
+
+    private void startCoolingCalculatorActivity() {
+        Intent intent = new Intent(this, Temperaturecalculator.class);
+        startActivity(intent);
     }
 
     private boolean hasCameraPermission(){
