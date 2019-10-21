@@ -1,23 +1,34 @@
 package ch.beerpro.presentation;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.firebase.ui.auth.AuthUI;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ch.beerpro.FlirActivity;
 import ch.beerpro.R;
+import ch.beerpro.Temperaturecalculator;
 import ch.beerpro.presentation.explore.BeerCategoriesFragment;
 import ch.beerpro.presentation.explore.BeerManufacturersFragment;
 import ch.beerpro.presentation.explore.ExploreFragment;
@@ -32,8 +43,9 @@ import ch.beerpro.presentation.utils.ViewPagerAdapter;
  * <p>
  * The Activity has three tabs, each of which implemented by a fragment and held together by a {@link ViewPager}.
  */
-public class MainActivity extends AppCompatActivity
-        implements BeerCategoriesFragment.OnItemSelectedListener, BeerManufacturersFragment.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements
+        BeerCategoriesFragment.OnItemSelectedListener,
+        BeerManufacturersFragment.OnItemSelectedListener{
 
     /**
      * We use ButterKnife's view injection instead of having to call findViewById repeatedly.
@@ -44,6 +56,17 @@ public class MainActivity extends AppCompatActivity
     ViewPager viewPager;
     @BindView(R.id.tablayout)
     TabLayout tabLayout;
+
+    public static final int PERM_REQUEST_CAPTURE_CODE = 100;
+    public static final String[] PERM_REQUEST_CAPTURE_STRING = new String[] {
+            Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    public static final int PERM_REQUEST_EXT_STORAGE_CODE = 101;
+    public static final String[] PERM_REQUEST_EXT_STORAGE_STRING = new String[] {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +84,100 @@ public class MainActivity extends AppCompatActivity
 
         setupViewPager(viewPager, tabLayout);
 
-        /*
-         * Just a placeholder for your own ideas...
-         * */
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        fab.setOnClickListener(view -> startCoolingCalculatorActivity());
+//        Opens the Fliractivity. Temporarily replaced with coolingtimecalculator for testing purposes
+//        fab.setOnClickListener(view -> {
+//            if(!hasCameraPermission()) {
+//                requestCameraPermission();
+//            } else {
+//                if (!hasExtStoragePermission()) {
+//                    requestExtStoragePermission();
+//                } else {
+//                    startFlirActivity();
+//                }
+//            }
+//        });
+    }
+
+    private void startCoolingCalculatorActivity() {
+        Intent intent = new Intent(this, Temperaturecalculator.class);
+        startActivity(intent);
+    }
+
+    private boolean hasCameraPermission(){
+        int perm1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        int perm2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return PackageManager.PERMISSION_GRANTED == perm1 && PackageManager.PERMISSION_GRANTED == perm2;
+    }
+
+    private void requestCameraPermission(){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+            ActivityCompat.requestPermissions(this, PERM_REQUEST_CAPTURE_STRING, PERM_REQUEST_CAPTURE_CODE);
+        }
+        else {
+            ActivityCompat.requestPermissions(this, PERM_REQUEST_CAPTURE_STRING, PERM_REQUEST_CAPTURE_CODE);
+        }
+    }
+
+    private boolean hasExtStoragePermission(){
+        int perm = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return PackageManager.PERMISSION_GRANTED == perm;
+    }
+
+    private void requestExtStoragePermission(){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            ActivityCompat.requestPermissions(this, PERM_REQUEST_EXT_STORAGE_STRING, PERM_REQUEST_EXT_STORAGE_CODE);
+        }
+        else {
+            ActivityCompat.requestPermissions(this, PERM_REQUEST_EXT_STORAGE_STRING, PERM_REQUEST_EXT_STORAGE_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERM_REQUEST_CAPTURE_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startFlirActivity();
+                }
+                else {
+                    Toast.makeText(this, "Camera permissions are needed for thermal capture", Toast.LENGTH_SHORT).show();
+                }
+
+                return;
+            }
+
+            case PERM_REQUEST_EXT_STORAGE_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startFlirActivity();
+                }
+                else {
+                    Toast.makeText(this, "External storage permissions are needed for saving thermal data to device", Toast.LENGTH_SHORT).show();
+                }
+
+                return;
+            }
+
+            default: {
+                break;
+            }
+        }
+    }
+
+    private void startFlirActivity(){
+        Intent intent = new Intent(this, FlirActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     private void setupViewPager(ViewPager viewPager, TabLayout tabLayout) {
