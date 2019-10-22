@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements
 
         setupViewPager(viewPager, tabLayout);
 
+        // TODO: Temporarily used camerabutton to initialize temperaturecalculator. Needs to be implemented in fridge.
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> startCoolingCalculatorActivity());
 //        Opens the Fliractivity. Temporarily replaced with coolingtimecalculator for testing purposes
