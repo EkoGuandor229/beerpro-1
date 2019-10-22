@@ -117,7 +117,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Calculate"
+            android:text="Kühlzeit berechnen"
             android:id="@+id/calculationbutton"
             android:layout_gravity="bottom">
         </Button>
