@@ -153,7 +153,7 @@ public class Temperaturecalculator extends AppCompatActivity {
         int hoursToCool = (timeToCoolInSeconds/3600);
         int minutesToCool =((timeToCoolInSeconds%3600)/60);
         int secondsToCool = (timeToCoolInSeconds%60);
-        String timeToCoolAsString = "Time to Cool: " + hoursToCool + " hours, " + minutesToCool + " minutes and " + secondsToCool + " seconds";
+        String timeToCoolAsString = "Ungefähre Kühlzeit: " + hoursToCool + " Stunden, " + minutesToCool + " Minuten und " + secondsToCool + " Sekunden";
         Toast.makeText(this, (timeToCoolAsString), Toast.LENGTH_LONG).show();
 
     }
