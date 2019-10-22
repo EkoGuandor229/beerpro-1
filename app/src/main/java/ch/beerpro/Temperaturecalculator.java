@@ -101,7 +101,7 @@ public class Temperaturecalculator extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                desiredTemperature = parent.getItemAtPosition(1).toString();
+                desiredTemperature = parent.getItemAtPosition(0).toString();
             }
         });
         Button calculationButton = findViewById(R.id.calculationbutton);
@@ -109,6 +109,12 @@ public class Temperaturecalculator extends AppCompatActivity {
     }
 
     private void calculateOptimalTemperature() {
+        //TODO: Refactor
+        /*
+        * To add more different variables, add them as Items in the strings.xml.
+        * IMPORTANT: The first item in the strings.xml is the default variable for the
+        * calculation. Add new items at the end of the strings-array
+        */
         double containerCoefficient;
         int initialBeerTemperature;
         int fridgeTemperature;
@@ -122,6 +128,8 @@ public class Temperaturecalculator extends AppCompatActivity {
         }
         if (initialTemperature.equals("Aussentemperatur (30°C)")) {
             initialBeerTemperature = 30;
+        } else if (initialTemperature.equals("Kellertemperatur (12°C)")) {
+            initialBeerTemperature = 12;
         } else {
             initialBeerTemperature = 20;
         }

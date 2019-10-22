@@ -104,6 +104,7 @@
     <string name="title_activity_mybeers">Meine Biere</string>
     <string name="action_search">Bier suchen</string>
 
+
     <string-array name="container_types">
         <item>Dose</item>
         <item>Glasflasche</item>
@@ -111,6 +112,7 @@
     <string-array name="initial_temperature">
         <item>Raumtemperatur (20°C)</item>
         <item>Aussentemperatur (30°C)</item>
+        <item>Kellertemperatur (12°C)</item>
     </string-array>
     <string-array name="cooling_variant">
         <item>Kühlschrank (4°C)</item>
