@@ -91,7 +91,7 @@ public class FlirActivity extends AppCompatActivity implements
             Toast.makeText(this, "Please insert FLIR One and select " + getString(R.string.app_name), Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            
+
         }
     }
 
