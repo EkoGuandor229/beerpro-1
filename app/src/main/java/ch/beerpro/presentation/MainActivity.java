@@ -1,5 +1,6 @@
 package ch.beerpro.presentation;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +22,7 @@ import ch.beerpro.R;
 import ch.beerpro.presentation.explore.BeerCategoriesFragment;
 import ch.beerpro.presentation.explore.BeerManufacturersFragment;
 import ch.beerpro.presentation.explore.ExploreFragment;
+import ch.beerpro.presentation.explore.search.SearchActivity;
 import ch.beerpro.presentation.profile.ProfileFragment;
 import ch.beerpro.presentation.ratings.RatingsFragment;
 import ch.beerpro.presentation.splash.SplashScreenActivity;
@@ -132,11 +134,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBeerCategorySelected(String name) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra("Category",name);
+        startActivity(intent);
         // TODO implement
     }
 
     @Override
     public void onBeerManufacturerSelected(String name) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra("Manufacturer",name);
+        startActivity(intent);
         // TODO implement
     }
 }
