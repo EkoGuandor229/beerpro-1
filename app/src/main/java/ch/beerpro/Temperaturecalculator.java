@@ -108,7 +108,7 @@ public class Temperaturecalculator extends AppCompatActivity {
         calculationButton.setOnClickListener(view -> calculateOptimalTemperature());
     }
 
-    private void calculateOptimalTemperature() {
+    public void calculateOptimalTemperature() {
         //TODO: Refactor
         /*
         * To add more different variables, add them as Items in the strings.xml.
