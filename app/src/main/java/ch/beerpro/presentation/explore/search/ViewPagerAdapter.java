@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import ch.beerpro.presentation.explore.search.beers.SearchResultFragment;
 import ch.beerpro.presentation.explore.search.suggestions.SearchSuggestionsFragment;
+import ch.beerpro.presentation.explore.search.SearchFilterFragment;
 import ch.beerpro.presentation.profile.mybeers.MyBeersFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -16,6 +17,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private Fragment searchSuggestionsFragment;
     private Fragment searchResultFragment;
     private Fragment myBeersFragment;
+    private Fragment filterFragment;
 
     private boolean showSuggestions = true;
     private boolean hasChanged = false;
@@ -25,6 +27,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         searchSuggestionsFragment = new SearchSuggestionsFragment();
         searchResultFragment = new SearchResultFragment();
         myBeersFragment = new MyBeersFragment();
+        filterFragment = new SearchFilterFragment();
     }
 
     public void setShowSuggestions(boolean showSuggestions) {
@@ -43,13 +46,15 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 }
             case 1:
                 return myBeersFragment;
+            case 2:
+                return filterFragment;
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -72,7 +77,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 return "ALLE BIERE";
             case 1:
                 return "MEINE BIERE";
+            case 2:
+                return "Filter";
         }
         return null;
     }
+
 }
