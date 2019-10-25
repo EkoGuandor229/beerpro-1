@@ -115,15 +115,21 @@ public class Temperaturecalculator extends AppCompatActivity {
 
     }
 
-    public String convertCoolingTimeIntToString(int coolingTimeSeconds){
-        if (coolingTimeSeconds == -1337){
-            return "Bier ist bereits optimal gekühlt";
-        } else {
-            int hoursToCool = (coolingTimeSeconds / 3600);
-            int minutesToCool = ((coolingTimeSeconds % 3600) / 60);
-            int secondsToCool = (coolingTimeSeconds % 60);
-            String timeToCoolAsString = "Ungefähre Kühlzeit: " + hoursToCool + " Stunden, " + minutesToCool + " Minuten und " + secondsToCool + " Sekunden";
-            return timeToCoolAsString;
+    public String convertCoolingTimeIntToString(int coolingTimeSeconds) {
+        try{
+            if (coolingTimeSeconds == -1337){
+                return "Bier ist bereits optimal gekühlt";
+            } else  if(coolingTimeSeconds <= 0) {
+                throw new IllegalArgumentException("Fehler: Fehlerhafte Eingabe");
+            } else {
+                int hoursToCool = (coolingTimeSeconds / 3600);
+                int minutesToCool = ((coolingTimeSeconds % 3600) / 60);
+                int secondsToCool = (coolingTimeSeconds % 60);
+                String timeToCoolAsString = "Ungefähre Kühlzeit: " + hoursToCool + " Stunden, " + minutesToCool + " Minuten und " + secondsToCool + " Sekunden";
+                return timeToCoolAsString;
+            }
+        } catch (IllegalArgumentException e){
+            return e.getMessage();
         }
     }
     public int calculateOptimalTemperature(double containerCoefficient, int initialBeerTemperature, int fridgeTemperature, int optimalBeerTemperature) {
@@ -133,15 +139,15 @@ public class Temperaturecalculator extends AppCompatActivity {
         * IMPORTANT: The first item in the strings.xml is the default variable for the
         * calculation. Add new items at the end of the strings-array
         */
-                int timeToCoolInSeconds;
+        int timeToCoolInSeconds;
         //time = (ln((T2-T0)/(T1-T0))/-k
         if (optimalBeerTemperature>=initialBeerTemperature){
             return -1337;
         } else {
-            int formuladivisor = Math.abs(optimalBeerTemperature - fridgeTemperature);
-            int formuladividend = Math.abs(initialBeerTemperature - fridgeTemperature);
-            double logarithmOfDivision = Math.log((double) formuladivisor / (double) formuladividend);
-            timeToCoolInSeconds = (int) Math.abs(Math.round(logarithmOfDivision / containerCoefficient));
+            double formuladivisor = (optimalBeerTemperature - fridgeTemperature);
+            double formuladividend = (initialBeerTemperature - fridgeTemperature);
+            double logarithmOfDivision = Math.log(formuladivisor / formuladividend);
+            timeToCoolInSeconds = (int) ((logarithmOfDivision / containerCoefficient));
             return timeToCoolInSeconds;
         }
     }
@@ -185,7 +191,7 @@ public class Temperaturecalculator extends AppCompatActivity {
         if (containerType.equals("Glasflasche")) {
             containerCoefficient = -0.00012d;
         } else {
-            containerCoefficient = -0.00071d;
+            containerCoefficient = -0.000708d;
         }
         return containerCoefficient;
     }
