@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.beerpro.GlideApp;
 import ch.beerpro.R;
+import ch.beerpro.Temperaturecalculator;
 import ch.beerpro.domain.models.MyBeer;
 import ch.beerpro.domain.models.Rating;
 import ch.beerpro.domain.models.Wish;
@@ -106,6 +107,12 @@ public class ProfileFragment extends Fragment {
     @OnClick(R.id.myBeers)
     public void handleMyBeersClick(View view) {
         Intent intent = new Intent(getActivity(), MyBeersActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.coolingCalulator)
+    public void handleCoolingCalculatorClick(View view) {
+        Intent intent = new Intent(getActivity(), Temperaturecalculator.class);
         startActivity(intent);
     }
 

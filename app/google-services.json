@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "770168707092",
+    "firebase_url": "https://mge19-miniprojekt.firebaseio.com",
+    "project_id": "mge19-miniprojekt",
+    "storage_bucket": "mge19-miniprojekt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770168707092:android:abd4e23cce38be415a2f01",
+        "android_client_info": {
+          "package_name": "ch.beerpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "770168707092-9uf7gvedbpkn4360857umg13odefa431.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ch.beerpro",
+            "certificate_hash": "8470809fa6adf03c371a31a1c971a5bf84abca42"
+          }
+        },
+        {
+          "client_id": "770168707092-oqu94gfrgbbbs3q1d7j7ltg8sldn3eol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi10PstE7Yu0YBM7fNAyfqa_d7Xe8FPqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "770168707092-oqu94gfrgbbbs3q1d7j7ltg8sldn3eol.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

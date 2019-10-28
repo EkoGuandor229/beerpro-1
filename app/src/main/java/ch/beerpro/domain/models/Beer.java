@@ -88,7 +88,7 @@ public class Beer implements Entity, Serializable {
         if (o == this) return true;
         if (!(o instanceof Beer)) return false;
         final Beer other = (Beer) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual(this)) return false;
         final Object this$id = this.getId();
         final Object other$id = other.getId();
         if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
