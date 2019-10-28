@@ -34,6 +34,8 @@ public class SearchActivity extends AppCompatActivity
     private EditText searchEditText;
     private MyBeersViewModel myBeersViewModel;
     private TabLayout tabLayout;
+    private String category;
+    private String manufacturer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class SearchActivity extends AppCompatActivity
 
         findViewById(R.id.clearFilterButton).setOnClickListener(view -> {
             searchEditText.setText(null);
+            category = null;
+            manufacturer = null;
             handleSearch(null);
         });
 
@@ -63,12 +67,24 @@ public class SearchActivity extends AppCompatActivity
         viewPager.setSaveFromParentEnabled(false);
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         myBeersViewModel = ViewModelProviders.of(this).get(MyBeersViewModel.class);
+
+        Bundle getextra = getIntent().getExtras();
+        if (getextra != null) {
+            if (getextra.getString("Category") != null) {
+                category = getextra.getString("Category");
+            }
+            if (getextra.getString("Manufacturer") != null) {
+                manufacturer = getextra.getString("Manufacturer");
+            }
+            handleSearch(null);
+        }
     }
 
     private void handleSearch(String text) {
-        searchViewModel.setSearchTerm(text);
-        myBeersViewModel.setSearchTerm(text);
-        adapter.setShowSuggestions(Strings.isNullOrEmpty(text));
+        String search_text = "" + text + "," + category + "," + manufacturer;
+        searchViewModel.setSearchTerm(search_text);
+        myBeersViewModel.setSearchTerm(search_text);
+        adapter.setShowSuggestions(Strings.isNullOrEmpty(text) && Strings.isNullOrEmpty(category) && Strings.isNullOrEmpty(manufacturer));
         adapter.notifyDataSetChanged();
     }
 
