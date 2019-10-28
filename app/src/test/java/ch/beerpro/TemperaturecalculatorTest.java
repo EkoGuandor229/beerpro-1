@@ -23,7 +23,7 @@ import org.junit.Test;
 
 
 public class TemperaturecalculatorTest {
-    float relativeTemperatureDeviation = 0.2f;
+    float relativeTemperatureDeviation = 0.1f;
     Temperaturecalculator temperaturecalculator = new Temperaturecalculator();
     @Test
     public void TwelfeDegreeLagerCanInFridge(){
@@ -44,7 +44,7 @@ public class TemperaturecalculatorTest {
                 temperaturecalculator.getFridgeTemperature("Kühlschrank (4°C)"),
                 temperaturecalculator.getOptimalBeerTemperature("Irish Stout")
         );
-        Assert.assertEquals(-1337, result, 0f);
+        Assert.assertTrue( result <= 0);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class TemperaturecalculatorTest {
                 temperaturecalculator.getFridgeTemperature("Tiefkühler (-18°C)"),
                 temperaturecalculator.getOptimalBeerTemperature("Irish Stout")
         );
-        Assert.assertEquals(-1337, result, 0f);
+        Assert.assertTrue(result <= 0);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class TemperaturecalculatorTest {
                 temperaturecalculator.getFridgeTemperature("Tiefkühler (-18°C)"),
                 temperaturecalculator.getOptimalBeerTemperature("Ale")
         );
-        Assert.assertEquals(120f, result, 120f*relativeTemperatureDeviation);
+        Assert.assertEquals(100f, result, 100f*relativeTemperatureDeviation);
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -246,7 +246,7 @@ public class TemperaturecalculatorTest {
                 temperaturecalculator.getFridgeTemperature("Kühlschrank (4°C)"),
                 temperaturecalculator.getOptimalBeerTemperature("Irish Stout")
         );
-        Assert.assertEquals(-1337, result, 0f);
+        Assert.assertTrue(result <=0);
     }
 
     @Test
@@ -278,7 +278,7 @@ public class TemperaturecalculatorTest {
                 temperaturecalculator.getFridgeTemperature("Tiefkühler (-18°C)"),
                 temperaturecalculator.getOptimalBeerTemperature("Irish Stout")
         );
-        Assert.assertEquals(-1337, result, 0f);
+        Assert.assertTrue(result <= 0);
     }
 
     @Test
@@ -429,15 +429,9 @@ public class TemperaturecalculatorTest {
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     @Test
-    public void  ConverterWithArbitraryCode() {
+    public void  ConverterNegativeInput() {
         String result = temperaturecalculator.convertCoolingTimeIntToString(-1337);
         Assert.assertTrue(result.equals("Bier ist bereits optimal gekühlt"));
-    }
-
-    @Test
-    public void ConverterWithNegativeInput() {
-        String result = temperaturecalculator.convertCoolingTimeIntToString(-42);
-        Assert.assertTrue(result.equals("Fehler: Fehlerhafte Eingabe"));
     }
 
     @Test

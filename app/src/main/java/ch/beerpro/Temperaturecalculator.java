@@ -22,10 +22,10 @@ public class Temperaturecalculator extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temperaturecalculator);
 
-        Spinner containerSpinner = (Spinner) findViewById(R.id.container_type);
-        Spinner initialTemperatureSpinner = (Spinner) findViewById(R.id.initial_temperature);
-        Spinner fridgeTemperatureSpinner = (Spinner) findViewById(R.id.fridge_temperature);
-        Spinner desiredTemperatureSpinner = (Spinner) findViewById(R.id.desired_temperature);
+        Spinner containerSpinner = findViewById(R.id.container_type);
+        Spinner initialTemperatureSpinner = findViewById(R.id.initial_temperature);
+        Spinner fridgeTemperatureSpinner = findViewById(R.id.fridge_temperature);
+        Spinner desiredTemperatureSpinner = findViewById(R.id.desired_temperature);
 
         // Create an ArrayAdapter using the string array and a default spinner
         ArrayAdapter<CharSequence> containerAdapter = ArrayAdapter
@@ -116,40 +116,28 @@ public class Temperaturecalculator extends AppCompatActivity {
     }
 
     public String convertCoolingTimeIntToString(int coolingTimeSeconds) {
-        try{
-            if (coolingTimeSeconds == -1337){
-                return "Bier ist bereits optimal gekühlt";
-            } else  if(coolingTimeSeconds <= 0) {
-                throw new IllegalArgumentException("Fehler: Fehlerhafte Eingabe");
-            } else {
-                int hoursToCool = (coolingTimeSeconds / 3600);
-                int minutesToCool = ((coolingTimeSeconds % 3600) / 60);
-                int secondsToCool = (coolingTimeSeconds % 60);
-                String timeToCoolAsString = "Ungefähre Kühlzeit: " + hoursToCool + " Stunden, " + minutesToCool + " Minuten und " + secondsToCool + " Sekunden";
-                return timeToCoolAsString;
-            }
-        } catch (IllegalArgumentException e){
-            return e.getMessage();
+        if(coolingTimeSeconds <= 0) {
+            return "Bier ist bereits optimal gekühlt";
+        } else {
+            int hoursToCool = (coolingTimeSeconds / 3600);
+            int minutesToCool = ((coolingTimeSeconds % 3600) / 60);
+            int secondsToCool = (coolingTimeSeconds % 60);
+            String timeToCoolAsString = "Ungefähre Kühlzeit: " + hoursToCool + " Stunden, " + minutesToCool + " Minuten und " + secondsToCool + " Sekunden";
+            return timeToCoolAsString;
         }
     }
     public int calculateOptimalTemperature(double containerCoefficient, int initialBeerTemperature, int fridgeTemperature, int optimalBeerTemperature) {
-        //TODO: Refactor
         /*
         * To add more different variables, add them as Items in the strings.xml.
         * IMPORTANT: The first item in the strings.xml is the default variable for the
         * calculation. Add new items at the end of the strings-array
         */
         int timeToCoolInSeconds;
-        //time = (ln((T2-T0)/(T1-T0))/-k
-        if (optimalBeerTemperature>=initialBeerTemperature){
-            return -1337;
-        } else {
-            double formuladivisor = (optimalBeerTemperature - fridgeTemperature);
-            double formuladividend = (initialBeerTemperature - fridgeTemperature);
-            double logarithmOfDivision = Math.log(formuladivisor / formuladividend);
-            timeToCoolInSeconds = (int) ((logarithmOfDivision / containerCoefficient));
-            return timeToCoolInSeconds;
-        }
+        double formuladivisor = (optimalBeerTemperature - fridgeTemperature);
+        double formuladividend = (initialBeerTemperature - fridgeTemperature);
+        double logarithmOfDivision = Math.log(formuladivisor / formuladividend);
+        timeToCoolInSeconds = (int) ((logarithmOfDivision / containerCoefficient));
+        return timeToCoolInSeconds;
     }
 
     public int getOptimalBeerTemperature(String desiredTemperature) {
