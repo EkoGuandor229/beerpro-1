@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import ch.beerpro.data.repositories.BeersRepository;
 import ch.beerpro.data.repositories.CurrentUser;
 import ch.beerpro.data.repositories.MyBeersRepository;
@@ -65,7 +62,7 @@ public class MyBeersViewModel extends ViewModel implements CurrentUser {
             return Collections.emptyList();
         }
         ArrayList<MyBeer> filtered = new ArrayList<>();
-        String [] searchedValues = new String[3];
+        String[] searchedValues = new String[3];
         getSearchedStrings(searchTerm1, searchedValues);
 
         if (searchedValues[1].equals("null") && searchedValues[2].equals("null")) {
@@ -74,30 +71,26 @@ public class MyBeersViewModel extends ViewModel implements CurrentUser {
                     filtered.add(beer);
                 }
             }
-        }
-        else if (searchedValues[2].equals("null") && searchedValues[0].equals("null")) {
+        } else if (searchedValues[2].equals("null") && searchedValues[0].equals("null")) {
             for (MyBeer beer : myBeers) {
                 if (beer.getBeer().getCategory().toLowerCase().contains(searchedValues[1].toLowerCase())) {
                     filtered.add(beer);
                 }
             }
-        }
-        else if (searchedValues[0].equals("null") && searchedValues[1].equals("null")) {
+        } else if (searchedValues[0].equals("null") && searchedValues[1].equals("null")) {
             for (MyBeer beer : myBeers) {
                 if (beer.getBeer().getManufacturer().toLowerCase().contains(searchedValues[2].toLowerCase())) {
                     filtered.add(beer);
                 }
             }
-        }
-        else if (searchedValues[1].equals("null")) {
+        } else if (searchedValues[1].equals("null")) {
             for (MyBeer beer : myBeers) {
                 if (beer.getBeer().getManufacturer().toLowerCase().contains(searchedValues[2].toLowerCase()) &&
                         beer.getBeer().getName().toLowerCase().contains(searchedValues[0].toLowerCase())) {
                     filtered.add(beer);
                 }
             }
-        }
-        else if (searchedValues[2].equals("null")) {
+        } else if (searchedValues[2].equals("null")) {
             for (MyBeer beer : myBeers) {
                 if (beer.getBeer().getCategory().toLowerCase().contains(searchedValues[1].toLowerCase()) &&
                         beer.getBeer().getName().toLowerCase().contains(searchedValues[0].toLowerCase())) {
@@ -120,7 +113,7 @@ public class MyBeersViewModel extends ViewModel implements CurrentUser {
         this.searchTerm.setValue(searchTerm);
     }
 
-    private static void getSearchedStrings(String s, String [] values){
+    private static void getSearchedStrings(String s, String[] values) {
 
         String[] search = s.split(",");
         values[0] = search[0];
@@ -135,5 +128,5 @@ public class MyBeersViewModel extends ViewModel implements CurrentUser {
         Matcher m3 = r_category.matcher(search[2]);
         if (m1.find()) {
             System.out.println("Found value Beer: " + m1.group(1)); */
-        }
     }
+}

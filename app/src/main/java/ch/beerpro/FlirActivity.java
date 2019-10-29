@@ -1,7 +1,5 @@
 package ch.beerpro;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
@@ -13,6 +11,8 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.flir.flironesdk.Device;
 import com.flir.flironesdk.Frame;
@@ -54,7 +54,6 @@ public class FlirActivity extends AppCompatActivity implements
                 RenderedImage.ImageType.BlendedMSXRGBA8888Image,
                 RenderedImage.ImageType.ThermalRGBA8888Image
         );
-
 
 
         RenderedImage.ImageType defaultImageType = RenderedImage.ImageType.BlendedMSXRGBA8888Image;

@@ -1,15 +1,15 @@
 package ch.beerpro;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Temperaturecalculator extends AppCompatActivity {
     private String containerType;
@@ -111,10 +111,10 @@ public class Temperaturecalculator extends AppCompatActivity {
     private void calculateOptimalTemperature() {
         //TODO: Refactor
         /*
-        * To add more different variables, add them as Items in the strings.xml.
-        * IMPORTANT: The first item in the strings.xml is the default variable for the
-        * calculation. Add new items at the end of the strings-array
-        */
+         * To add more different variables, add them as Items in the strings.xml.
+         * IMPORTANT: The first item in the strings.xml is the default variable for the
+         * calculation. Add new items at the end of the strings-array
+         */
         double containerCoefficient = getContainerCoefficient();
         int initialBeerTemperature = getInitialBeerTemperature();
         int fridgeTemperature = getFridgeTemperature();
@@ -122,13 +122,13 @@ public class Temperaturecalculator extends AppCompatActivity {
         int timeToCoolInSeconds;
 
         //time = (ln((T2-T0)/(T1-T0))/-k
-        int formuladivisor = Math.abs(optimalBeerTemperature-fridgeTemperature);
-        int formuladividend = Math.abs(initialBeerTemperature-fridgeTemperature);
-        double logarithmOfDivision = Math.log((double)formuladivisor/(double)formuladividend);
-        timeToCoolInSeconds = (int) Math.abs(Math.round(logarithmOfDivision/containerCoefficient));
-        int hoursToCool = (timeToCoolInSeconds/3600);
-        int minutesToCool =((timeToCoolInSeconds%3600)/60);
-        int secondsToCool = (timeToCoolInSeconds%60);
+        int formuladivisor = Math.abs(optimalBeerTemperature - fridgeTemperature);
+        int formuladividend = Math.abs(initialBeerTemperature - fridgeTemperature);
+        double logarithmOfDivision = Math.log((double) formuladivisor / (double) formuladividend);
+        timeToCoolInSeconds = (int) Math.abs(Math.round(logarithmOfDivision / containerCoefficient));
+        int hoursToCool = (timeToCoolInSeconds / 3600);
+        int minutesToCool = ((timeToCoolInSeconds % 3600) / 60);
+        int secondsToCool = (timeToCoolInSeconds % 60);
         String timeToCoolAsString = "Ungefähre Kühlzeit: " + hoursToCool + " Stunden, " + minutesToCool + " Minuten und " + secondsToCool + " Sekunden";
         Toast.makeText(this, (timeToCoolAsString), Toast.LENGTH_LONG).show();
 
