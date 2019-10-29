@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".presentation.profile.myfridge.FridgeActivity" />
+        <activity android:name=".presentation.profile.myfridge.MyFridgeActivity" />
         <activity android:name=".Temperaturecalculator" />
         <activity android:name=".FlirActivity" />
         <activity

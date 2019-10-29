@@ -26,6 +26,8 @@ public class FridgeItem implements Entity{
         this.creationDate = creationDate;
     }
 
+    public FridgeItem() {}
+
     public String getId() {
         return this.id;
     }
