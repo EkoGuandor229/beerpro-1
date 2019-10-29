@@ -18,7 +18,8 @@ public class FridgeItem implements Entity{
     private Integer amount;
     private Date creationDate;
 
-    public FridgeItem(String userId, String beerId, Integer amount, Date creationDate) {
+    public FridgeItem(String id, String userId, String beerId, Integer amount, Date creationDate) {
+        this.id = id;
         this.userId = userId;
         this.beerId = beerId;
         this.amount = amount;
