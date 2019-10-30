@@ -1,16 +1,13 @@
 package ch.beerpro.presentation;
 
 import android.Manifest;
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.firebase.ui.auth.AuthUI;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import butterknife.BindView;
@@ -47,7 +42,7 @@ import ch.beerpro.presentation.utils.ViewPagerAdapter;
  */
 public class MainActivity extends AppCompatActivity implements
         BeerCategoriesFragment.OnItemSelectedListener,
-        BeerManufacturersFragment.OnItemSelectedListener{
+        BeerManufacturersFragment.OnItemSelectedListener {
 
     /**
      * We use ButterKnife's view injection instead of having to call findViewById repeatedly.
@@ -60,13 +55,13 @@ public class MainActivity extends AppCompatActivity implements
     TabLayout tabLayout;
 
     public static final int PERM_REQUEST_CAPTURE_CODE = 100;
-    public static final String[] PERM_REQUEST_CAPTURE_STRING = new String[] {
+    public static final String[] PERM_REQUEST_CAPTURE_STRING = new String[]{
             Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
     public static final int PERM_REQUEST_EXT_STORAGE_CODE = 101;
-    public static final String[] PERM_REQUEST_EXT_STORAGE_STRING = new String[] {
+    public static final String[] PERM_REQUEST_EXT_STORAGE_STRING = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
@@ -88,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            if(!hasCameraPermission()) {
+            if (!hasCameraPermission()) {
                 requestCameraPermission();
             } else {
                 if (!hasExtStoragePermission()) {
@@ -105,31 +100,29 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private boolean hasCameraPermission(){
+    private boolean hasCameraPermission() {
         int perm1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         int perm2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         return PackageManager.PERMISSION_GRANTED == perm1 && PackageManager.PERMISSION_GRANTED == perm2;
     }
 
-    private void requestCameraPermission(){
+    private void requestCameraPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
             ActivityCompat.requestPermissions(this, PERM_REQUEST_CAPTURE_STRING, PERM_REQUEST_CAPTURE_CODE);
-        }
-        else {
+        } else {
             ActivityCompat.requestPermissions(this, PERM_REQUEST_CAPTURE_STRING, PERM_REQUEST_CAPTURE_CODE);
         }
     }
 
-    private boolean hasExtStoragePermission(){
+    private boolean hasExtStoragePermission() {
         int perm = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         return PackageManager.PERMISSION_GRANTED == perm;
     }
 
-    private void requestExtStoragePermission(){
+    private void requestExtStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             ActivityCompat.requestPermissions(this, PERM_REQUEST_EXT_STORAGE_STRING, PERM_REQUEST_EXT_STORAGE_CODE);
-        }
-        else {
+        } else {
             ActivityCompat.requestPermissions(this, PERM_REQUEST_EXT_STORAGE_STRING, PERM_REQUEST_EXT_STORAGE_CODE);
         }
     }
@@ -140,8 +133,7 @@ public class MainActivity extends AppCompatActivity implements
             case PERM_REQUEST_CAPTURE_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startFlirActivity();
-                }
-                else {
+                } else {
                     Toast.makeText(this, "Camera permissions are needed for thermal capture", Toast.LENGTH_SHORT).show();
                 }
 
@@ -151,8 +143,7 @@ public class MainActivity extends AppCompatActivity implements
             case PERM_REQUEST_EXT_STORAGE_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startFlirActivity();
-                }
-                else {
+                } else {
                     Toast.makeText(this, "External storage permissions are needed for saving thermal data to device", Toast.LENGTH_SHORT).show();
                 }
 
@@ -165,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void startFlirActivity(){
+    private void startFlirActivity() {
         Intent intent = new Intent(this, FlirActivity.class);
         startActivity(intent);
     }
@@ -244,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onBeerCategorySelected(String name) {
         Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra("Category",name);
+        intent.putExtra("Category", name);
         startActivity(intent);
         // TODO implement
     }
@@ -252,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onBeerManufacturerSelected(String name) {
         Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra("Manufacturer",name);
+        intent.putExtra("Manufacturer", name);
         startActivity(intent);
         // TODO implement
     }
