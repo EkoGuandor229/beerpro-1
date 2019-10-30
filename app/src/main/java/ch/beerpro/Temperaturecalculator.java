@@ -1,6 +1,7 @@
 package ch.beerpro;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
+
 
 public class Temperaturecalculator extends AppCompatActivity {
     private String containerType;
@@ -22,10 +24,14 @@ public class Temperaturecalculator extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temperaturecalculator);
 
-        Spinner containerSpinner = (Spinner) findViewById(R.id.container_type);
-        Spinner initialTemperatureSpinner = (Spinner) findViewById(R.id.initial_temperature);
-        Spinner fridgeTemperatureSpinner = (Spinner) findViewById(R.id.fridge_temperature);
-        Spinner desiredTemperatureSpinner = (Spinner) findViewById(R.id.desired_temperature);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Temperaturrechner");
+
+
+        Spinner containerSpinner = findViewById(R.id.container_type);
+        Spinner initialTemperatureSpinner = findViewById(R.id.initial_temperature);
+        Spinner fridgeTemperatureSpinner = findViewById(R.id.fridge_temperature);
+        Spinner desiredTemperatureSpinner = findViewById(R.id.desired_temperature);
 
         // Create an ArrayAdapter using the string array and a default spinner
         ArrayAdapter<CharSequence> containerAdapter = ArrayAdapter
@@ -105,36 +111,42 @@ public class Temperaturecalculator extends AppCompatActivity {
             }
         });
         Button calculationButton = findViewById(R.id.calculationbutton);
-        calculationButton.setOnClickListener(view -> calculateOptimalTemperature());
+        calculationButton.setOnClickListener(view -> Toast.makeText(this, convertCoolingTimeIntToString(
+                calculateOptimalTemperature(
+                    getContainerCoefficient(this.containerType),
+                    getInitialBeerTemperature(this.initialTemperature),
+                    getFridgeTemperature(this.fridgeTemperature),
+                    getOptimalBeerTemperature(this.desiredTemperature)))
+                , Toast.LENGTH_LONG).show());
+
     }
 
-    private void calculateOptimalTemperature() {
-        //TODO: Refactor
+    public String convertCoolingTimeIntToString(int coolingTimeSeconds) {
+        if(coolingTimeSeconds <= 0) {
+            return "Bier ist bereits optimal gekühlt";
+        } else {
+            int hoursToCool = (coolingTimeSeconds / 3600);
+            int minutesToCool = ((coolingTimeSeconds % 3600) / 60);
+            int secondsToCool = (coolingTimeSeconds % 60);
+            String timeToCoolAsString = "Ungefähre Kühlzeit: " + hoursToCool + " Stunden, " + minutesToCool + " Minuten und " + secondsToCool + " Sekunden";
+            return timeToCoolAsString;
+        }
+    }
+    public int calculateOptimalTemperature(double containerCoefficient, int initialBeerTemperature, int fridgeTemperature, int optimalBeerTemperature) {
         /*
         * To add more different variables, add them as Items in the strings.xml.
         * IMPORTANT: The first item in the strings.xml is the default variable for the
         * calculation. Add new items at the end of the strings-array
         */
-        double containerCoefficient = getContainerCoefficient();
-        int initialBeerTemperature = getInitialBeerTemperature();
-        int fridgeTemperature = getFridgeTemperature();
-        int optimalBeerTemperature = getOptimalBeerTemperature();
         int timeToCoolInSeconds;
-
-        //time = (ln((T2-T0)/(T1-T0))/-k
-        int formuladivisor = Math.abs(optimalBeerTemperature-fridgeTemperature);
-        int formuladividend = Math.abs(initialBeerTemperature-fridgeTemperature);
-        double logarithmOfDivision = Math.log((double)formuladivisor/(double)formuladividend);
-        timeToCoolInSeconds = (int) Math.abs(Math.round(logarithmOfDivision/containerCoefficient));
-        int hoursToCool = (timeToCoolInSeconds/3600);
-        int minutesToCool =((timeToCoolInSeconds%3600)/60);
-        int secondsToCool = (timeToCoolInSeconds%60);
-        String timeToCoolAsString = "Ungefähre Kühlzeit: " + hoursToCool + " Stunden, " + minutesToCool + " Minuten und " + secondsToCool + " Sekunden";
-        Toast.makeText(this, (timeToCoolAsString), Toast.LENGTH_LONG).show();
-
+        double formuladivisor = (optimalBeerTemperature - fridgeTemperature);
+        double formuladividend = (initialBeerTemperature - fridgeTemperature);
+        double logarithmOfDivision = Math.log(formuladivisor / formuladividend);
+        timeToCoolInSeconds = (int) ((logarithmOfDivision / containerCoefficient));
+        return timeToCoolInSeconds;
     }
 
-    private int getOptimalBeerTemperature() {
+    public int getOptimalBeerTemperature(String desiredTemperature) {
         int optimalBeerTemperature;
         if (desiredTemperature.equals("Ale")) {
             optimalBeerTemperature = 10;
@@ -146,9 +158,9 @@ public class Temperaturecalculator extends AppCompatActivity {
         return optimalBeerTemperature;
     }
 
-    private int getFridgeTemperature() {
+    public int getFridgeTemperature(String fridgeInitialTemperature) {
         int fridgeTemperature;
-        if (this.fridgeTemperature.equals("Tiefkühler (-18°C)")) {
+        if (fridgeInitialTemperature.equals("Tiefkühler (-18°C)")) {
             fridgeTemperature = -18;
         } else {
             fridgeTemperature = 4;
@@ -156,7 +168,7 @@ public class Temperaturecalculator extends AppCompatActivity {
         return fridgeTemperature;
     }
 
-    private int getInitialBeerTemperature() {
+    public int getInitialBeerTemperature(String initialTemperature) {
         int initialBeerTemperature;
         if (initialTemperature.equals("Aussentemperatur (30°C)")) {
             initialBeerTemperature = 30;
@@ -168,12 +180,12 @@ public class Temperaturecalculator extends AppCompatActivity {
         return initialBeerTemperature;
     }
 
-    private double getContainerCoefficient() {
+    public double getContainerCoefficient(String containerType) {
         double containerCoefficient;
         if (containerType.equals("Glasflasche")) {
             containerCoefficient = -0.00012d;
         } else {
-            containerCoefficient = -0.0007d;
+            containerCoefficient = -0.000708d;
         }
         return containerCoefficient;
     }

@@ -3,6 +3,7 @@ package ch.beerpro;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.opengl.GLSurfaceView;
@@ -28,6 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.Locale;
+
+import ch.beerpro.presentation.MainActivity;
 
 public class FlirActivity extends AppCompatActivity implements
         Device.Delegate,
@@ -86,7 +89,9 @@ public class FlirActivity extends AppCompatActivity implements
             //Ignore error if discovery has already started
         } catch (SecurityException e) {
             Toast.makeText(this, "Please insert FLIR One and select " + getString(R.string.app_name), Toast.LENGTH_LONG).show();
-            finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
         }
     }
 
