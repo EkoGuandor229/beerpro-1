@@ -1,6 +1,7 @@
 package ch.beerpro;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
+
 
 public class Temperaturecalculator extends AppCompatActivity {
     private String containerType;
@@ -21,6 +23,10 @@ public class Temperaturecalculator extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temperaturecalculator);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Temperaturrechner");
+
 
         Spinner containerSpinner = findViewById(R.id.container_type);
         Spinner initialTemperatureSpinner = findViewById(R.id.initial_temperature);
