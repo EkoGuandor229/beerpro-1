@@ -45,7 +45,7 @@ public class FridgeRepository {
         DocumentReference fridgeEntryQuery = db.collection(FridgeItem.COLLECTION).document(fridgeBeerId);
         return fridgeEntryQuery.get().continueWithTask(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
-                return fridgeEntryQuery.update("amountStored", task.getResult().getLong(FridgeItem.FIELD_AMOUNT) + 1);
+                return fridgeEntryQuery.update("amount", task.getResult().getLong(FridgeItem.FIELD_AMOUNT) + 1);
             } else if (task.isSuccessful()) {
                 return fridgeEntryQuery.set(new FridgeItem(fridgeBeerId, userId, itemId, 1, new Date()));
             } else {
@@ -60,7 +60,7 @@ public class FridgeRepository {
         DocumentReference fridgeEntryQuery = db.collection(FridgeItem.COLLECTION).document(fridgeBeerId);
         return fridgeEntryQuery.get().continueWithTask(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
-                return fridgeEntryQuery.update("amountStored", task.getResult().getLong(FridgeItem.FIELD_AMOUNT) - 1);
+                return fridgeEntryQuery.update("amount", task.getResult().getLong(FridgeItem.FIELD_AMOUNT) - 1);
             } else {
                 throw task.getException();
             }
@@ -74,7 +74,7 @@ public class FridgeRepository {
         DocumentReference fridgeEntryQuery = db.collection(FridgeItem.COLLECTION).document(fridgeBeerId);
         return fridgeEntryQuery.get().continueWithTask(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
-                return fridgeEntryQuery.update("amountStored", newAmount);
+                return fridgeEntryQuery.update("amount", newAmount);
             } else {
                 throw task.getException();
             }
