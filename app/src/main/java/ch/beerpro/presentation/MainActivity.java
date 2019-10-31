@@ -237,7 +237,6 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, SearchActivity.class);
         intent.putExtra("Category", name);
         startActivity(intent);
-        // TODO implement
     }
 
     @Override
@@ -245,6 +244,5 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, SearchActivity.class);
         intent.putExtra("Manufacturer", name);
         startActivity(intent);
-        // TODO implement
     }
 }

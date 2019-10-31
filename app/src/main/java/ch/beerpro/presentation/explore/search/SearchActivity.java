@@ -20,6 +20,8 @@ import com.google.common.base.Strings;
 import ch.beerpro.R;
 import ch.beerpro.domain.models.Beer;
 import ch.beerpro.presentation.details.DetailsActivity;
+import ch.beerpro.presentation.explore.BeerCategoriesFragment;
+import ch.beerpro.presentation.explore.BeerManufacturersFragment;
 import ch.beerpro.presentation.explore.search.beers.SearchResultFragment;
 import ch.beerpro.presentation.explore.search.suggestions.SearchSuggestionsFragment;
 import ch.beerpro.presentation.profile.mybeers.MyBeersViewModel;
@@ -27,7 +29,7 @@ import ch.beerpro.presentation.profile.mybeers.OnMyBeerItemInteractionListener;
 
 public class SearchActivity extends AppCompatActivity
         implements SearchResultFragment.OnItemSelectedListener, SearchSuggestionsFragment.OnItemSelectedListener,
-        OnMyBeerItemInteractionListener {
+        OnMyBeerItemInteractionListener, BeerCategoriesFragment.OnItemSelectedListener, BeerManufacturersFragment.OnItemSelectedListener{
 
     private SearchViewModel searchViewModel;
     private ViewPagerAdapter adapter;
@@ -56,6 +58,7 @@ public class SearchActivity extends AppCompatActivity
             searchEditText.setText(null);
             category = null;
             manufacturer = null;
+            searchEditText.setHint("Bier suchen");
             handleSearch(null);
         });
 
@@ -72,9 +75,12 @@ public class SearchActivity extends AppCompatActivity
         if (getextra != null) {
             if (getextra.getString("Category") != null) {
                 category = getextra.getString("Category");
+                searchEditText.setHint("Filter: " + category);
             }
             if (getextra.getString("Manufacturer") != null) {
                 manufacturer = getextra.getString("Manufacturer");
+                searchEditText.setHint("Filter: " + manufacturer);
+
             }
             handleSearch(null);
         }
@@ -126,5 +132,20 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onWishClickedListener(Beer item) {
         searchViewModel.toggleItemInWishlist(item.getId());
+    }
+
+    @Override
+    public void onBeerCategorySelected(String name) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra("Category",name);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBeerManufacturerSelected(String name) {
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra("Manufacturer",name);
+        startActivity(intent);
+
     }
 }
